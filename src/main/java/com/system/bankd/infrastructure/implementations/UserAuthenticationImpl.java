@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserAuthentication implements AuthUserRepository {
+public class UserAuthenticationImpl implements AuthUserRepository {
 
     @Autowired private MySqlAuthUser sqlAuthUser;
 
