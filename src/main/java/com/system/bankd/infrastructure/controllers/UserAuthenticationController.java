@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/auth/users")
@@ -20,12 +18,23 @@ public class UserAuthenticationController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<AuthUserResponse> registerUser(@RequestBody User user) {
-        AuthUserResponse userSaved = null;
+        AuthUserResponse userSaved;
         try {
             userSaved = this.authUserUseCases.registerUser(user);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
         return ResponseEntity.ok(userSaved);
+    }
+
+    @GetMapping(path = "/login")
+    public ResponseEntity<AuthUserResponse> userLogin(@RequestParam String userName, @RequestParam String password) {
+        AuthUserResponse userAuthenticated;
+        try {
+            userAuthenticated = this.authUserUseCases.login(userName, password);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.ok(userAuthenticated);
     }
 }
