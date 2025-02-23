@@ -3,6 +3,7 @@ package com.system.bankd.application;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.AuthUserRepository;
 import com.system.bankd.domain.repositories.CryptPasswordRepository;
+import com.system.bankd.domain.responses.AuthUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +14,18 @@ public class AuthUserUseCases {
 
     @Autowired private CryptPasswordRepository cryptRepository;
 
-    public User registerUser(User user) {
+    public AuthUserResponse registerUser(User user) {
         String encodedPassword = cryptRepository.encryptPassword(user.getPassword());
         user.setPassword(encodedPassword);
         this.authUserRepository.registerUser(user);
-        return user;
+        return mapAuthUser(user);
     }
 
     public User login(String username, String password) {
         return null;
+    }
+
+    public AuthUserResponse mapAuthUser(User user) {
+        return new AuthUserResponse(user.getUserId(), user.getUserName(), user.getFullName());
     }
 }

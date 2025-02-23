@@ -3,6 +3,7 @@ package com.system.bankd.infrastructure.controllers;
 
 import com.system.bankd.application.AuthUserUseCases;
 import com.system.bankd.domain.models.User;
+import com.system.bankd.domain.responses.AuthUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,8 +18,8 @@ public class UserAuthenticationController {
     @Autowired private AuthUserUseCases repository;
 
     @PostMapping(path = "/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User userSaved = null;
+    public ResponseEntity<AuthUserResponse> registerUser(@RequestBody User user) {
+        AuthUserResponse userSaved = null;
         try {
             userSaved = this.repository.registerUser(user);
         } catch (Exception e) {
