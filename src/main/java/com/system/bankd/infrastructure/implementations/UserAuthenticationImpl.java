@@ -17,7 +17,7 @@ public class UserAuthenticationImpl implements AuthUserRepository {
     }
 
     @Override
-    public User login(String username, String password) {
+    public User getUserByName(String username) {
         return this.sqlAuthUser.getUser(username);
     }
 }

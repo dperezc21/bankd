@@ -26,8 +26,11 @@ public class AuthUserUseCases {
         return mapAuthUser(user);
     }
 
-    public User login(String username, String password) {
-        return null;
+    public AuthUserResponse login(String username, String password) {
+        User userFound = this.authUserRepository.getUserByName(username);
+        if(userFound == null) return null;
+        Boolean verifyPassword = this.cryptRepository.verifyPassword(password, userFound.getPassword());
+        return verifyPassword ? this.mapAuthUser(userFound) : null;
     }
 
     public AuthUserResponse mapAuthUser(User user) {
