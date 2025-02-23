@@ -18,11 +18,12 @@ public class UserAuthenticationController {
 
     @PostMapping(path = "/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User userSaved = null;
         try {
-            this.repository.registerUser(user);
+            userSaved = this.repository.registerUser(user);
         } catch (Exception e) {
-
+            System.out.println(e);
         }
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userSaved);
     }
 }
