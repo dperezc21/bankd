@@ -14,4 +14,11 @@ public class BCryptPassword implements CryptPasswordRepository {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(this.STRENGTH_PASSWORD_NUMBER);
         return encoder.encode(password);
     }
+
+    @Override
+    public Boolean verifyPassword(String password, String passwordEncrypted) {
+        if(password == null) return false;
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.matches(password, passwordEncrypted);
+    }
 }
