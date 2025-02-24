@@ -21,7 +21,7 @@ public class Account {
     private String accountNumber;
 
     @Column(name = "amount")
-    private String accountAmount;
+    private Double accountAmount;
 
     @Column(name = "account_type")
     private AccountType accountType;
