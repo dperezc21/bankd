@@ -14,7 +14,8 @@ public class UserAccountUseCases {
 
     public Account saveUserAccount(AccountType accountType, User user) {
         Account account = this.getAccountByTypeAndUserId(user.getUserId(), accountType);
-        if(account == null) account = new Account();
+        if(account != null) return account;
+        account = new Account();
         account.setAccountNumber("accountNumber");
         account.setAccountType(accountType);
         account.setUser(user);
