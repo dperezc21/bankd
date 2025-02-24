@@ -17,7 +17,7 @@ public class UserAccountUseCases {
         if(account != null) return account;
         account = new Account();
         account.setAccountNumber("accountNumber");
-        account.setAccountType(accountType);
+        account.setAccountType(accountType.getValue());
         account.setAccountAmount(0.0);
         account.setUser(user);
         userAccountRepository.saveUserAccount(account);

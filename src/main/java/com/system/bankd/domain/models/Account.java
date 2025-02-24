@@ -24,7 +24,7 @@ public class Account {
     private Double accountAmount;
 
     @Column(name = "account_type")
-    private AccountType accountType;
+    private String accountType;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
