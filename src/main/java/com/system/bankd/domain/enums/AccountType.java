@@ -1,4 +1,4 @@
-package com.system.bankd.domain;
+package com.system.bankd.domain.enums;
 
 public enum AccountType {
     SAVING,

@@ -1,6 +1,6 @@
 package com.system.bankd.domain.models;
 
-import com.system.bankd.domain.AccountType;
+import com.system.bankd.domain.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,9 +8,8 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "account_user")
+@Table(name = "user_account")
 public class Account {
 
     @Id
