@@ -1,17 +1,16 @@
 package com.system.bankd.domain.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @ToString
+@Data
 @NoArgsConstructor
-@Table(name = "user_account")
 public class User {
 
     @Id
@@ -33,5 +32,8 @@ public class User {
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Account> accountList;
 
 }
