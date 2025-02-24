@@ -1,5 +1,6 @@
 package com.system.bankd.application;
 
+import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.exceptions.DuplicateEntryException;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.AuthUserRepository;
@@ -15,11 +16,14 @@ public class AuthUserUseCases {
 
     @Autowired private CryptPasswordRepository cryptRepository;
 
+    @Autowired private UserAccountUseCases userAccountUseCases;
+
     public AuthUserResponse registerUser(User user) {
         try {
             String encodedPassword = cryptRepository.encryptPassword(user.getPassword());
             user.setPassword(encodedPassword);
             this.authUserRepository.registerUser(user);
+            this.userAccountUseCases.saveUserAccount(AccountType.SAVING, user);
         } catch (DuplicateEntryException e) {
             throw new DuplicateEntryException("entry duplicated, try with other data");
         }
