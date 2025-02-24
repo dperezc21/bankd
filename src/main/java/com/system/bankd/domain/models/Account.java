@@ -17,8 +17,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountId;
 
-    @Column(name = "account_name")
-    private String accountName;
+    @Column(name = "account_number", nullable = false, unique = true)
+    private String accountNumber;
+
+    @Column(name = "amount")
+    private String accountAmount;
 
     @Column(name = "account_type")
     private AccountType accountType;
