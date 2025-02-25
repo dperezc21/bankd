@@ -4,7 +4,7 @@ import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.UserAccountRepository;
-import com.system.bankd.domain.responses.AccountDeposit;
+import com.system.bankd.domain.responses.AccountTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,22 +33,37 @@ public class UserAccountUseCases {
         return userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
     }
 
-    public AccountDeposit accountDeposit(Long userId, Long accountId, Double amount) {
-        Account accountToDeposit = this.userAccountRepository.getUserAccountById(accountId);
-        if(accountToDeposit == null) return null;
-        AccountType accountType = AccountType.valueOf(accountToDeposit.getAccountType().toUpperCase());
-        accountToDeposit = this.userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
+    public AccountTransaction accountDeposit(Long userId, Long accountId, Double amount) {
+        Account accountToDeposit = this.verifyAccountToTransaction(accountId, userId);
         if(accountToDeposit == null) return null;
         accountToDeposit.setAccountAmount(amount);
         this.userAccountRepository.deposit(accountToDeposit);
         return this.mapAccountDeposit(accountToDeposit);
     }
 
-    public AccountDeposit mapAccountDeposit(Account account) {
-        AccountDeposit accountDeposit = new AccountDeposit();
-        accountDeposit.setAccountId(account.getAccountId());
-        accountDeposit.setAmount(account.getAccountAmount());
-        accountDeposit.setUserId(accountDeposit.getUserId());
-        return accountDeposit;
+    public AccountTransaction withdrawInUserAccount(Long userId, Long accountId, Double amount) {
+        Account accountToWithdraw = this.verifyAccountToTransaction(accountId, userId);
+        if(accountToWithdraw == null) return null;
+        boolean validAmountAllowed = amount <= accountToWithdraw.getAccountAmount();
+        if(!validAmountAllowed) return null;
+        accountToWithdraw.setAccountAmount(accountToWithdraw.getAccountAmount() - amount);
+        this.userAccountRepository.deposit(accountToWithdraw);
+        return this.mapAccountDeposit(accountToWithdraw);
+    }
+
+    public Account verifyAccountToTransaction(Long accountId, Long userId) {
+        Account accountToDeposit = this.userAccountRepository.getUserAccountById(accountId);
+        if(accountToDeposit == null) return null;
+        AccountType accountType = AccountType.valueOf(accountToDeposit.getAccountType().toUpperCase());
+        accountToDeposit = this.userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
+        return accountToDeposit;
+    }
+
+    public AccountTransaction mapAccountDeposit(Account account) {
+        AccountTransaction accountTransaction = new AccountTransaction();
+        accountTransaction.setAccountId(account.getAccountId());
+        accountTransaction.setAmount(account.getAccountAmount());
+        accountTransaction.setUserId(account.getUser().getUserId());
+        return accountTransaction;
     }
 }

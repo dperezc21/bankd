@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-public class AccountDeposit {
+public class AccountTransaction {
     private Long userId;
     private Double amount;
     private Long accountId;
