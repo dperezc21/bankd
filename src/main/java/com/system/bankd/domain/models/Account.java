@@ -1,6 +1,5 @@
 package com.system.bankd.domain.models;
 
-import com.system.bankd.domain.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.*;
 

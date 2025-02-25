@@ -22,6 +22,7 @@ public class UserAuthenticationController {
         try {
             userSaved = this.authUserUseCases.registerUser(user);
         } catch (Exception e) {
+            System.out.println("error "+ e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
         return ResponseEntity.ok(userSaved);
