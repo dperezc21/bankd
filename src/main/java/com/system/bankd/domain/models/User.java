@@ -32,7 +32,7 @@ public class User {
     @Column(name = "full_name", nullable = false)
     private String fullName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private List<Account> accountList;
 
 }
