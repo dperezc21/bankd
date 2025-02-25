@@ -1,6 +1,5 @@
 package com.system.bankd.infrastructure.database;
 
-import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.models.Account;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

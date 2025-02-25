@@ -4,6 +4,7 @@ import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.UserAccountRepository;
+import com.system.bankd.domain.responses.AccountDeposit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,24 @@ public class UserAccountUseCases {
 
     public Account getAccountByTypeAndUserId(Long userId, AccountType accountType) {
         return userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
+    }
+
+    public AccountDeposit accountDeposit(Long userId, Long accountId, Double amount) {
+        Account accountToDeposit = this.userAccountRepository.getUserAccountById(accountId);
+        if(accountToDeposit == null) return null;
+        AccountType accountType = AccountType.valueOf(accountToDeposit.getAccountType().toUpperCase());
+        accountToDeposit = this.userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
+        if(accountToDeposit == null) return null;
+        accountToDeposit.setAccountAmount(amount);
+        this.userAccountRepository.deposit(accountToDeposit);
+        return this.mapAccountDeposit(accountToDeposit);
+    }
+
+    public AccountDeposit mapAccountDeposit(Account account) {
+        AccountDeposit accountDeposit = new AccountDeposit();
+        accountDeposit.setAccountId(account.getAccountId());
+        accountDeposit.setAmount(account.getAccountAmount());
+        accountDeposit.setUserId(accountDeposit.getUserId());
+        return accountDeposit;
     }
 }

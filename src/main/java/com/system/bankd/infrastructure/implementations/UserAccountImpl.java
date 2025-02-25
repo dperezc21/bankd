@@ -26,4 +26,9 @@ public class UserAccountImpl implements UserAccountRepository {
     public Account getAccountByTypeAndUserId(Long userId, AccountType accountType) {
         return this.mySqlUserAccount.getAccountByTypeAndUserId(userId, accountType.getValue());
     }
+
+    @Override
+    public void deposit(Account account) {
+        this.saveUserAccount(account);
+    }
 }
