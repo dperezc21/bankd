@@ -46,7 +46,7 @@ public class UserAccountUseCases {
         Account accountToWithdraw = this.verifyAccountToTransaction(accountId, userId);
         if(accountToWithdraw == null) throw new AccountTransactionException("account to withdraw not found");
         boolean validAmountAllowed = amount <= accountToWithdraw.getAccountAmount();
-        if(!validAmountAllowed) throw new AccountTransactionException("amount less that account amount current");
+        if(!validAmountAllowed) throw new AccountTransactionException("amount greater that account amount current");
         accountToWithdraw.setAccountAmount(accountToWithdraw.getAccountAmount() - amount);
         this.userAccountRepository.deposit(accountToWithdraw);
         return this.mapAccountDeposit(accountToWithdraw);
