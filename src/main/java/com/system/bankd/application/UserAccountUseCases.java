@@ -36,7 +36,7 @@ public class UserAccountUseCases {
     public AccountTransaction accountDeposit(Long userId, Long accountId, Double amount) {
         Account accountToDeposit = this.verifyAccountToTransaction(accountId, userId);
         if(accountToDeposit == null) return null;
-        accountToDeposit.setAccountAmount(amount);
+        accountToDeposit.setAccountAmount(accountToDeposit.getAccountAmount() + amount);
         this.userAccountRepository.deposit(accountToDeposit);
         return this.mapAccountDeposit(accountToDeposit);
     }
