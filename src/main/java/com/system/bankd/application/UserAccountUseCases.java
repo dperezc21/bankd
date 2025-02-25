@@ -1,6 +1,7 @@
 package com.system.bankd.application;
 
 import com.system.bankd.domain.enums.AccountType;
+import com.system.bankd.domain.exceptions.AccountTransactionException;
 import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.UserAccountRepository;
@@ -33,19 +34,19 @@ public class UserAccountUseCases {
         return userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
     }
 
-    public AccountTransaction accountDeposit(Long userId, Long accountId, Double amount) {
+    public AccountTransaction accountDeposit(Long userId, Long accountId, Double amount) throws AccountTransactionException {
         Account accountToDeposit = this.verifyAccountToTransaction(accountId, userId);
-        if(accountToDeposit == null) return null;
+        if(accountToDeposit == null) throw new AccountTransactionException("account to deposit not found");
         accountToDeposit.setAccountAmount(accountToDeposit.getAccountAmount() + amount);
         this.userAccountRepository.deposit(accountToDeposit);
         return this.mapAccountDeposit(accountToDeposit);
     }
 
-    public AccountTransaction withdrawInUserAccount(Long userId, Long accountId, Double amount) {
+    public AccountTransaction withdrawInUserAccount(Long userId, Long accountId, Double amount) throws AccountTransactionException {
         Account accountToWithdraw = this.verifyAccountToTransaction(accountId, userId);
-        if(accountToWithdraw == null) return null;
+        if(accountToWithdraw == null) throw new AccountTransactionException("account to withdraw not found");
         boolean validAmountAllowed = amount <= accountToWithdraw.getAccountAmount();
-        if(!validAmountAllowed) return null;
+        if(!validAmountAllowed) throw new AccountTransactionException("amount less that account amount current");
         accountToWithdraw.setAccountAmount(accountToWithdraw.getAccountAmount() - amount);
         this.userAccountRepository.deposit(accountToWithdraw);
         return this.mapAccountDeposit(accountToWithdraw);
