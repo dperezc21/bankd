@@ -1,8 +1,8 @@
 package com.system.bankd.infrastructure.controllers;
 
 import com.system.bankd.application.MovementUseCase;
-import com.system.bankd.domain.models.Movement;
 import com.system.bankd.domain.responses.GenericResponse;
+import com.system.bankd.domain.responses.MovementResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ public class AccountMovementController {
 
     @GetMapping("/all/{accountId}")
     public ResponseEntity getMovementsOfAccount(@PathVariable Long accountId) {
-        List<Movement> movements;
+        List<MovementResponse> movements;
         try {
             movements = this.movementUseCase.getAllMovements(accountId);
         } catch (Exception e) {

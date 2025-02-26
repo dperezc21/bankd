@@ -5,6 +5,7 @@ import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.Movement;
 import com.system.bankd.domain.repositories.AccountMovementRepository;
 import com.system.bankd.domain.repositories.UserAccountRepository;
+import com.system.bankd.domain.responses.MovementResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +26,19 @@ public class MovementUseCase {
         accountMovementRepository.saveMomentOfAccount(movement);
     }
 
-    public List<Movement> getAllMovements(Long accountId) throws AccountNotFoundException {
+    public List<MovementResponse> getAllMovements(Long accountId) throws AccountNotFoundException {
         Account findAccount = this.userAccountRepository.getUserAccountById(accountId);
         if(findAccount == null) throw new AccountNotFoundException("account not found");
-        return this.accountMovementRepository.getMomentsByAccountId(accountId);
+        return this.accountMovementRepository.getMomentsByAccountId(accountId).stream().map(this::mapMovement).toList();
     }
 
+    public MovementResponse mapMovement(Movement movement) {
+        MovementResponse movementResponse = new MovementResponse();
+        movementResponse.setId(movement.getMovementId());
+        movementResponse.setName(movement.getMovementName());
+        movementResponse.setDescription(movement.getDescription());
+        movementResponse.setAmount(movement.getAmount());
+        movementResponse.setCreatedDate(movement.getCreatedAt());
+        return movementResponse;
+    }
 }
