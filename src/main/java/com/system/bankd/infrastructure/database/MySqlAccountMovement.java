@@ -9,5 +9,5 @@ import java.util.List;
 public interface MySqlAccountMovement extends CrudRepository<Movement, Long> {
 
     @Query("select m from Movement m where m.account.accountId = ?1")
-    List<Movement> getMovementsOfAccount(long accountId);
+    List<Movement> getMovementsOfAccount(Long accountId);
 }
