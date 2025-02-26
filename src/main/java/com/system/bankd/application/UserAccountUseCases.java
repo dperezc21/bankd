@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserAccountUseCases {
 
     @Autowired private UserAccountRepository userAccountRepository;
+    @Autowired private MovementUseCase movementUseCase;
 
     public Account saveUserAccount(AccountType accountType, User user) {
         Account account = this.getAccountByTypeAndUserId(user.getUserId(), accountType);
@@ -39,6 +40,7 @@ public class UserAccountUseCases {
         if(accountToDeposit == null) throw new AccountTransactionException("account to deposit not found");
         accountToDeposit.setAccountAmount(accountToDeposit.getAccountAmount() + amount);
         this.userAccountRepository.deposit(accountToDeposit);
+        this.movementUseCase.saveMovement("deposit", "send amount", amount, accountToDeposit);
         return this.mapAccountDeposit(accountToDeposit);
     }
 
@@ -49,6 +51,7 @@ public class UserAccountUseCases {
         if(!validAmountAllowed) throw new AccountTransactionException("amount greater that account amount current");
         accountToWithdraw.setAccountAmount(accountToWithdraw.getAccountAmount() - amount);
         this.userAccountRepository.deposit(accountToWithdraw);
+        this.movementUseCase.saveMovement("take out", "take out in toronto branch", amount * -1, accountToWithdraw);
         return this.mapAccountDeposit(accountToWithdraw);
     }
 
