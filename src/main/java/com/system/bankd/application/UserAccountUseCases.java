@@ -15,16 +15,16 @@ public class UserAccountUseCases {
     @Autowired private UserAccountRepository userAccountRepository;
     @Autowired private MovementUseCase movementUseCase;
 
-    public Account saveUserAccount(AccountType accountType, User user) {
+    public AccountTransaction saveUserAccount(AccountType accountType, User user) {
         Account account = this.getAccountByTypeAndUserId(user.getUserId(), accountType);
-        if(account != null) return account;
+        if(account != null) return this.mapAccountTransaction(account);
         account = new Account();
         account.setAccountNumber(GenerateId.generateId());
         account.setAccountType(accountType.getValue());
         account.setAccountAmount(0.0);
         account.setUser(user);
         userAccountRepository.saveUserAccount(account);
-        return account;
+        return this.mapAccountTransaction(account);
     }
 
     public Account getAccountById(Long accountId) {
@@ -68,6 +68,15 @@ public class UserAccountUseCases {
         accountTransaction.setAccountId(account.getAccountId());
         accountTransaction.setAmount(account.getAccountAmount());
         accountTransaction.setUserId(account.getUser().getUserId());
+        return accountTransaction;
+    }
+
+    private AccountTransaction mapAccountTransaction(Account account) {
+        AccountTransaction accountTransaction = new AccountTransaction();
+        accountTransaction.setAccountId(account.getAccountId());
+        accountTransaction.setAmount(account.getAccountAmount());
+        accountTransaction.setUserId(account.getUser().getUserId());
+        accountTransaction.setAccountType(account.getAccountType());
         return accountTransaction;
     }
 }
