@@ -2,9 +2,11 @@ package com.system.bankd.application;
 
 import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.exceptions.AccountTransactionException;
+import com.system.bankd.domain.exceptions.UserNotFoundException;
 import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.User;
 import com.system.bankd.domain.repositories.UserAccountRepository;
+import com.system.bankd.domain.repositories.UserRepository;
 import com.system.bankd.domain.responses.AccountTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,15 +16,18 @@ public class UserAccountUseCases {
 
     @Autowired private UserAccountRepository userAccountRepository;
     @Autowired private MovementUseCase movementUseCase;
+    @Autowired private UserRepository userRepository;
 
-    public AccountTransaction saveUserAccount(AccountType accountType, User user) {
-        Account account = this.getAccountByTypeAndUserId(user.getUserId(), accountType);
+    public AccountTransaction saveUserAccount(AccountType accountType, Long userId) throws UserNotFoundException {
+        User findUser = this.userRepository.findUserById(userId);
+        if(findUser == null) throw new UserNotFoundException("user not found");
+        Account account = this.getAccountByTypeAndUserId(userId, accountType);
         if(account != null) return this.mapAccountTransaction(account);
         account = new Account();
         account.setAccountNumber(GenerateId.generateId());
         account.setAccountType(accountType.getValue());
         account.setAccountAmount(0.0);
-        account.setUser(user);
+        account.setUser(findUser);
         userAccountRepository.saveUserAccount(account);
         return this.mapAccountTransaction(account);
     }
