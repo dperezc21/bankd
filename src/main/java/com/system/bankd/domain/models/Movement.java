@@ -36,5 +36,9 @@ public class Movement {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id")
+    private Card card;
+
     public Movement() { this.createdAt = new Date(); }
 }
