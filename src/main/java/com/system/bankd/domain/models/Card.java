@@ -19,4 +19,8 @@ public class Card {
 
     private String cardType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
+
 }
