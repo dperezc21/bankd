@@ -1,5 +1,6 @@
 package com.system.bankd.application;
 
+import com.system.bankd.domain.constants.Messages;
 import com.system.bankd.domain.enums.AccountType;
 import com.system.bankd.domain.exceptions.AccountTransactionException;
 import com.system.bankd.domain.exceptions.UserNotFoundException;
@@ -32,10 +33,6 @@ public class UserAccountUseCases {
         return this.mapAccountTransaction(account);
     }
 
-    public Account getAccountById(Long accountId) {
-        return userAccountRepository.getUserAccountById(accountId);
-    }
-
     public Account getAccountByTypeAndUserId(Long userId, AccountType accountType) {
         return userAccountRepository.getAccountByTypeAndUserId(userId, accountType);
     }
@@ -53,7 +50,7 @@ public class UserAccountUseCases {
         Account accountToWithdraw = this.verifyAccountToTransaction(accountId, userId);
         if(accountToWithdraw == null) throw new AccountTransactionException("account to withdraw not found");
         boolean validAmountAllowed = amount <= accountToWithdraw.getAccountAmount();
-        if(!validAmountAllowed) throw new AccountTransactionException("amount greater that account amount current");
+        if(!validAmountAllowed) throw new AccountTransactionException(Messages.AMOUNT_INVALID_MESSAGE);
         accountToWithdraw.setAccountAmount(accountToWithdraw.getAccountAmount() - amount);
         this.userAccountRepository.deposit(accountToWithdraw);
         this.movementUseCase.saveMovement("take out", "take out in toronto branch", amount * -1, accountToWithdraw);

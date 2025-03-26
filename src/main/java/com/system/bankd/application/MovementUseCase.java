@@ -1,5 +1,6 @@
 package com.system.bankd.application;
 
+import com.system.bankd.domain.constants.Messages;
 import com.system.bankd.domain.exceptions.AccountNotFoundException;
 import com.system.bankd.domain.models.Account;
 import com.system.bankd.domain.models.Movement;
@@ -28,7 +29,7 @@ public class MovementUseCase {
 
     public List<MovementResponse> getAllMovements(Long accountId) throws AccountNotFoundException {
         Account findAccount = this.userAccountRepository.getUserAccountById(accountId);
-        if(findAccount == null) throw new AccountNotFoundException("account not found");
+        if(findAccount == null) throw new AccountNotFoundException(Messages.ACCOUNT_NOT_FOUND_MESSAGE);
         return this.accountMovementRepository.getMomentsByAccountId(accountId).stream().map(this::mapMovement).toList();
     }
 
