@@ -3,9 +3,11 @@ package com.system.bankd.card.infrastructure;
 import com.system.bankd.card.application.CardUseCases;
 import com.system.bankd.account.domain.AccountTransactionResponse;
 import com.system.bankd.GenericResponse;
+import com.system.bankd.card.domain.CardTransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +28,18 @@ public class CardController {
         }
 
         return ResponseEntity.ok(new GenericResponse<>("", amount));
+    }
+
+    @PostMapping("/card")
+    public ResponseEntity saveCardUser(@RequestBody CardTransactionResponse cardTransactionResponse) {
+
+        try {
+            this.cardUseCases.saveCardUserAccount(cardTransactionResponse.getAccountId(),
+                                                    cardTransactionResponse.getCardType());
+        } catch(Exception e) {
+
+        }
+
+        return ResponseEntity.ok(new GenericResponse<>("", null));
     }
 }

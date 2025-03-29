@@ -15,4 +15,9 @@ public class CardImpl implements CardRepository {
     public List<Card> cardsByAccount(Long accountId) {
         return this.mySqlCard.getCardsByAccount(accountId).stream().toList();
     }
+
+    @Override
+    public void saveCardUserAccount(Card card) {
+        this.mySqlCard.save(card);
+    }
 }
