@@ -17,7 +17,8 @@ public class CardUseCases {
     @Autowired private MovementUseCase movementUseCase;
     @Autowired private CardRepository cardRepository;
 
-    public Double takeOutUsingCard(Long accountId, Double amount) throws AccountNotFoundException, AccountTransactionException {
+    public Double takeOutUsingCard(Long accountId, Double amount, Long cardId) throws AccountNotFoundException, AccountTransactionException {
+        Card cardExist = cardRepository.cardByCardNumber(cardId);
         Account getAccount = AccountUtils.getUserAccount(accountId);
         boolean transactionValid = getAccount.getAccountAmount() > amount;
         if(!transactionValid) throw new AccountTransactionException(Messages.AMOUNT_INVALID_MESSAGE);

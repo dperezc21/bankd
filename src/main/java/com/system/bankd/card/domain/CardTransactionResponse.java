@@ -11,4 +11,5 @@ import lombok.Setter;
 public class CardTransactionResponse {
     private Long accountId;
     private String cardType;
+    private Long cardId;
 }

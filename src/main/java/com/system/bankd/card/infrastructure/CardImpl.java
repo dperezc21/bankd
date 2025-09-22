@@ -20,4 +20,9 @@ public class CardImpl implements CardRepository {
     public void saveCardUserAccount(Card card) {
         this.mySqlCard.save(card);
     }
+
+    @Override
+    public Card cardByCardNumber(Long cardNumber) {
+        return mySqlCard.findById(cardNumber);
+    }
 }

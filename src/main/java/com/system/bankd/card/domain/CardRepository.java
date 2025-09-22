@@ -5,4 +5,5 @@ import java.util.List;
 public interface CardRepository {
     List<Card> cardsByAccount(Long accountId);
     void saveCardUserAccount(Card card);
+    Card cardByCardNumber(Long cardNumber);
 }
